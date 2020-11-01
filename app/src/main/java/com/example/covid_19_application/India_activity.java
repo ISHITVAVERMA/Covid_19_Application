@@ -1,6 +1,8 @@
 package com.example.covid_19_application;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +16,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import Adapter.MyAdapter;
+import Model.ListItem;
 
 public class India_activity extends AppCompatActivity {
 
@@ -23,6 +30,9 @@ public class India_activity extends AppCompatActivity {
     TextView discharged;
     TextView total_confirmed_state;
     TextView total_confirmed_case_day_text;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private List<ListItem> listItem;
 
 
     @Override
@@ -36,8 +46,33 @@ public class India_activity extends AppCompatActivity {
         total_confirmed_state=findViewById(R.id.total_confirmed_state);
         total_confirmed_case_day_text=findViewById(R.id.total_confirmed_case_day);
 
+        recyclerView=(RecyclerView)findViewById(R.id.Recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        listItem = new ArrayList<>();
+
+        for(int i=0;i<50;i++)
+        {
+            ListItem item=new ListItem(
+                    "Item"+(i+1),
+
+                    "Description"+(i+1),
+                    "rating"+(i+1)
+            );
+
+            listItem.add(item);
+        }
+
+
+
+        adapter=new MyAdapter(this,listItem);
+        recyclerView.setAdapter(adapter);
+
         String url = "https://api.rootnet.in/covid19-in/stats/latest";
         new India_activity.MyAsyncTaskgetNews().execute(url);
+
+
 
     }
 

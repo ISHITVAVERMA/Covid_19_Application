@@ -1,6 +1,8 @@
 package com.example.covid_19_application;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,12 +19,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import Adapter.MyAdapter;
+import Model.ListItem;
 
 public class Country_wise_Status extends AppCompatActivity {
 
     EditText editText;
     TextView textView1;
     TextView textView2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
