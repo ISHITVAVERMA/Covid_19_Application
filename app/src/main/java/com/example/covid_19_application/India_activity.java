@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -33,6 +35,10 @@ public class India_activity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItem;
+    String a[] = new String[1000];
+    //String a1[] = new String[29];
+    //String a2[] = new String[29];
+
 
 
     @Override
@@ -46,13 +52,19 @@ public class India_activity extends AppCompatActivity {
         total_confirmed_state=findViewById(R.id.total_confirmed_state);
         total_confirmed_case_day_text=findViewById(R.id.total_confirmed_case_day);
 
+
+
+        String url = "https://api.rootnet.in/covid19-in/stats/latest";
+        new India_activity.MyAsyncTaskgetNews().execute(url);
+
+
         recyclerView=(RecyclerView)findViewById(R.id.Recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         listItem = new ArrayList<>();
 
-        for(int i=0;i<50;i++)
+        /*for(int i=0;i<50;i++)
         {
             ListItem item=new ListItem(
                     "Item"+(i+1),
@@ -61,16 +73,28 @@ public class India_activity extends AppCompatActivity {
                     "rating"+(i+1)
             );
 
-            listItem.add(item);
+
+        }*/
+
+        for(int i=0;i<=1000;i=i+3)
+        {
+            a[i]="he";
+            String one=a[i];
+            //String two=a[i+1];
+            // String three=a[i+2];
+            listItem.add(new ListItem("hello"+a[i],"hello","bye"));
+            System.out.println(a[i]);
         }
 
 
 
+
+
+        listItem.add(new ListItem("Hello","me","bye"));
+
+
         adapter=new MyAdapter(this,listItem);
         recyclerView.setAdapter(adapter);
-
-        String url = "https://api.rootnet.in/covid19-in/stats/latest";
-        new India_activity.MyAsyncTaskgetNews().execute(url);
 
 
 
@@ -165,7 +189,7 @@ public class India_activity extends AppCompatActivity {
                 */
 
 
-                String s1="Strimg";
+
 
                 JSONObject json=new JSONObject(progress[0]);
 
@@ -178,14 +202,35 @@ public class India_activity extends AppCompatActivity {
                 deaths.setText(data1.getString("deaths"));
                 discharged.setText(data1.getString("discharged"));
 
-               /* String str8="";
-                for(int i =0; i<1000;i++)
-                {
-                    str8="qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq";
+                JSONArray data2 = data.getJSONArray("regional");
+
+
+
+                for(int i=0;i<data2.length();i=i+3) {
+                    JSONObject JO = (JSONObject) data2.get(i);
+
+                    String city = JO.getString("loc");
+                    String confirmed_now=JO.getString("confirmedCasesIndian");
+                    String death_now=JO.getString("deaths");
+
+
+                   //listItem.add(new ListItem("hello","bye","death_now"));
+
+                    //Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
+                    a[i]=city;
+                    a[i+1]=confirmed_now;
+                    a[i+2]=death_now;
+
+                    System.out.println(a[i]);
+                    //System.out.println(a[i+1]);
+                    //System.out.println(a[i+2]);
 
                 }
-                total_confirmed_case_day_text.setText(str8);
-*/
+
+
+
+
+
 
 
 
