@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ import java.util.List;
 import Adapter.MyAdapter;
 import Model.ListItem;
 
-public class India_activity extends AppCompatActivity {
+public class India_activity extends AppCompatActivity  {
 
     TextView loc;
     TextView deaths;
@@ -35,10 +36,8 @@ public class India_activity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItem> listItem;
-    String a[] = new String[1000];
-    //String a1[] = new String[29];
-    //String a2[] = new String[29];
 
+    String a[] = new String[1000];
 
 
     @Override
@@ -54,47 +53,11 @@ public class India_activity extends AppCompatActivity {
 
 
 
+
         String url = "https://api.rootnet.in/covid19-in/stats/latest";
         new India_activity.MyAsyncTaskgetNews().execute(url);
 
 
-        recyclerView=(RecyclerView)findViewById(R.id.Recycler);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        listItem = new ArrayList<>();
-
-        /*for(int i=0;i<50;i++)
-        {
-            ListItem item=new ListItem(
-                    "Item"+(i+1),
-
-                    "Description"+(i+1),
-                    "rating"+(i+1)
-            );
-
-
-        }*/
-
-        for(int i=0;i<=1000;i=i+3)
-        {
-            a[i]="he";
-            String one=a[i];
-            //String two=a[i+1];
-            // String three=a[i+2];
-            listItem.add(new ListItem("hello"+a[i],"hello","bye"));
-            System.out.println(a[i]);
-        }
-
-
-
-
-
-        listItem.add(new ListItem("Hello","me","bye"));
-
-
-        adapter=new MyAdapter(this,listItem);
-        recyclerView.setAdapter(adapter);
 
 
 
@@ -205,8 +168,14 @@ public class India_activity extends AppCompatActivity {
                 JSONArray data2 = data.getJSONArray("regional");
 
 
+                recyclerView=(RecyclerView)findViewById(R.id.Recycler);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                for(int i=0;i<data2.length();i=i+3) {
+                listItem = new ArrayList<>();
+
+
+                for(int i=0;i<data2.length();i=i+1) {
                     JSONObject JO = (JSONObject) data2.get(i);
 
                     String city = JO.getString("loc");
@@ -214,25 +183,17 @@ public class India_activity extends AppCompatActivity {
                     String death_now=JO.getString("deaths");
 
 
-                   //listItem.add(new ListItem("hello","bye","death_now"));
+                   listItem.add(new ListItem(city,confirmed_now,death_now));
 
                     //Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
-                    a[i]=city;
-                    a[i+1]=confirmed_now;
-                    a[i+2]=death_now;
 
-                    System.out.println(a[i]);
-                    //System.out.println(a[i+1]);
-                    //System.out.println(a[i+2]);
 
                 }
+                System.out.print(data2.length());
 
 
-
-
-
-
-
+                adapter=new MyAdapter(getApplicationContext(),listItem);
+                recyclerView.setAdapter(adapter);
 
 
                 //Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_LONG).show();
